@@ -1,0 +1,44 @@
+---
+- hosts: all
+  become: true
+  tasks:
+  
+  - name: install apache2 &  php packages for Debian  and Ubuntu
+    apt:
+      name:
+      - apache2
+      state: latest
+      update_cache: yes
+  - name: install Mysql
+    tags: mysql-server
+    apt:
+       name:
+       - mysql-server
+       state: present
+       update_cache: yes
+  
+  - name: starting mysql services
+    tags: staring services
+    action: service name=mysql state=started
+
+  - name: installing php
+    tags: php
+    apt:
+      name:
+      - libapache2-mod-php
+      state: latest
+      update_cache: yes
+
+  - name: restart apache2
+    service:
+      name: apache2
+      state: restarted
+  
+  - name: default site
+    tags: apache,apache2,httpd
+    copy:
+      src: site/default_site.html  # give your own site
+      dest: /var/www/html/index.html
+      owner: root
+      group: root
+      mode: 0664
