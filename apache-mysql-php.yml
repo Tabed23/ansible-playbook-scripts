@@ -11,10 +11,17 @@
       - libapache2-mod-php
       state: latest
       update_cache: yes
+  
+
   - name: starting mysql services
     tags: staring services
-    action: service name=mysql state=started
-
+    service: 
+      name: mysql
+      state: started
+  
+  - name: mysql login & password
+    shell : touch login.txt | echo "mysql_user:root \n mysql_pass:root" > login.txt
+    
   - name: restart apache2
     service:
       name: apache2
