@@ -20,3 +20,12 @@
       state: latest
       update_cache: yes
     when: ansible_distribution == "CentOS"
+    
+  - name: default site
+    tags: apache,apache2,httpd
+    copy:
+      src: default_site.html  # give your own site
+      dest: /var/www/html/index.html
+      owner: root
+      group: root
+      mode: 0664

@@ -1,0 +1,9 @@
+---
+- name: installing server dependencies
+  hosts: all
+  become: true
+  gather_facts: true
+- name: Include apache2
+  import_playbook: apache.yml
+- name: Include mysql
+  import_playbook: mysql.yml
