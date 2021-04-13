@@ -1,0 +1,36 @@
+---
+- name: installing Tomcat
+  hosts: all
+  become: true
+  become_user: root
+  gather_facts: false
+  vars:
+    port_tomcat: 9090
+  tasks:
+
+    - name: downloading the TomCat
+      get_url:
+        url: https://mirrors.hostingromania.ro/apache.org/tomcat/tomcat-10/v10.0.5/bin/apache-tomcat-10.0.5.tar.gz
+        dest: /usr/local
+
+    - name: extracting the tar.gz file
+      unarchive:
+        src: /usr/local/apache-tomcat-10.0.5.tar.gz
+        dest: /usr/local/
+        remote_src: yes
+
+    - name: renaming the file directory to tomcat
+      command: mv /usr/local/apache-tomcat-10.0.5 /usr/local/tomcat
+    
+    - name: Task name
+      template:
+        src: tomcat-config.xml.j2
+        dest: /usr/local/tomcat/conf/server.xml
+        
+      
+    - name: staring TomCat
+      shell: nohup /usr/local/tomcat/bin/startup.sh &
+
+    - name: removing tar file
+      become: true
+      command: rm /usr/local/apache-tomcat-10.0.5.tar.gz

@@ -1,0 +1,9 @@
+---
+- name: installing server dependencies
+  hosts: all
+  become: true
+  gather_facts: true
+- name: Include java
+  import_playbook: installing-java.yml
+- name: Include mysql
+  import_playbook: tomcat.yml
