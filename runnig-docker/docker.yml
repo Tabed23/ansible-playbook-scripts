@@ -1,0 +1,47 @@
+---
+- name: installing & running docker
+  hosts: all
+  become: true
+  gather_facts: true
+  vars_files:
+      - var/default.yml
+  tasks:
+
+  - name: adding docker GPG key
+    ansible.builtin.apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+  - name: adding docker repo
+    apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu bionic stable
+        state: present
+
+
+  - name: installing docker-ce
+    apt:
+      name:
+      - docker-ce
+      state: present
+      update_cache: yes
+
+
+  - name: staring docker service
+    service:
+     name: docker
+     state: started
+  - name: python module for docker
+    pip:
+      name: docker
+
+  - name: pulling the default image
+    docker_image:
+        name: "{{ default_container_image }}"
+        source: pull
+
+  - name: creating the container
+    docker_container:
+      name: "{{docker_container_name}}"
+      image: "{{ default_container_image }}"
+      command: "{{ default_container_command }}"
+      state: present

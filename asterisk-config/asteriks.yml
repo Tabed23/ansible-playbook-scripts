@@ -1,0 +1,11 @@
+---
+- name: installing server dependencies
+  hosts: all
+  become: true
+  gather_facts: true
+- name: Include update
+  import_playbook: update.yml
+- name: Include  asteriks-dependencies
+  import_playbook: asterisk-dependencise.yml
+- name: asterisk config
+  import_playbook: asteriks-config.yml

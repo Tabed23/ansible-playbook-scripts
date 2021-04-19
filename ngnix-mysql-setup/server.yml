@@ -3,7 +3,7 @@
   hosts: all
   become: true
   gather_facts: true
-- name: Include apache2
-  import_playbook: apache.yml
+- name: Include nginx
+  import_playbook: nginx.yml
 - name: Include mysql
   import_playbook: mysql.yml

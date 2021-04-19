@@ -1,0 +1,4 @@
+---
+http_host: "your host"
+http_conf: default
+http_port: 9090"

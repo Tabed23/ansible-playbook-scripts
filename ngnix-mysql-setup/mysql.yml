@@ -26,6 +26,13 @@
       service:
          name: mysql
          state: started
+    
+    - name: setiing root password
+      mysql_user:
+        name: root
+        password: "{{ mysql_root_password }}"
+        login_unix_socket: var/run/mysqld/mysqld.sock
+      
     - name: Save root password in .my.cnf
       template:
        src: ./root_cnf.j2

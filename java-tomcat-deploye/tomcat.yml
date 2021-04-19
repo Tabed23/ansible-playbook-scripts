@@ -24,7 +24,7 @@
     
     - name: Task name
       template:
-        src: tomcat-config.xml.j2
+        src: server.xml.j2
         dest: /usr/local/tomcat/conf/server.xml
         
       

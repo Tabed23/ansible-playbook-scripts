@@ -1,0 +1,9 @@
+---
+- name: running
+  hosts: all
+  become: true
+  gather_facts: true
+- name: Include dependencies
+  import_playbook: dependencies.yml
+- name: Include docker
+  import_playbook: docker.yml

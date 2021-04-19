@@ -1,0 +1,17 @@
+---
+- name: Update & Upgrading the host machine
+  hosts: all
+  become: true
+  tasks:
+  - name: Update all packages to their latest version
+    apt:
+      name: "*"
+      state: presnet
+      update_cache: yes
+  - name: install packages for docker
+    apt:
+      name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common

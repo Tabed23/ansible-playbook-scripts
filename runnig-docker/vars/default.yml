@@ -1,0 +1,5 @@
+---
+creat_container: 1
+docker_container_name: docker-ansible-creating
+default_container_image: ubuntu
+default_container_command: echo " Hello, Docker form Ansible"

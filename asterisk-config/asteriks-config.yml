@@ -1,0 +1,25 @@
+---
+- name: instaling & configure asteriks
+  hosts: all
+  become: true
+  tasks:
+
+  - name: dowmloading the asteriks
+    get_url:
+        url:  http://downloads.asterisk.org/pub/telephony/asterisk/asterisk-16-current.tar.gz
+        dest: /usr/src
+    
+  - name: extracting the tar file
+    unarchive:
+      src: /usr/src/asterisk-16-current.tar.gz
+      dest: /usr/src/
+      remote_src: yes
+  
+  - name: download the mp3 decoder library
+    shell: /usr/src/asterisk-16.17.0/contrib/scripts/get_mp3_source.sh
+  
+  - name: Ensure all dependencies are resolved
+    shell: /usr/src/asterisk-16.17.0/contrib/scripts/install_prereq
+  
+  - name: Run the configure script to satisfy build dependencies
+    shell: /usr/src/asterisk-16.17.0/configure

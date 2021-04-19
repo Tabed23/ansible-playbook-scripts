@@ -2,6 +2,8 @@
 - name: installing nginx & php
   hosts: all
   become: true
+  vars_files:
+      - vars/default.yml
   tasks:
   
   - name: install nginx
@@ -26,6 +28,22 @@
       - php-curl
       state: latest
       update_cache: yes
+  - name:  Configuration nignix files
+    template:
+     src: files/nginx.conf.j2
+     dest: /etc/nginx/sites-available/{{ http_conf }}
+  
+  - name: enablaing the new site
+    file:
+    src: /etc/nginx/sites-available/{{ http_conf }} 
+    dest: /etc/nginx/sites-enabled/{{ http_conf }}
+    state: link
+  
+  - name: setting up php info
+    template:
+    src: files/info.php.j2
+    dest: /var/www/html/info.php
+
   - name: enabling the nginx service
     ansible.builtin.systemd:
       name: nginx
