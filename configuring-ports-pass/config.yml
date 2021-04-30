@@ -1,0 +1,25 @@
+---
+- name: changing the proxmox cluster services
+  hosts: all
+  become: true
+  gather_facts: no
+  vars_files:
+    - vars/default.yml
+  tasks:
+     - name: insterting the ssh keys into the server
+       template:
+          src: ./authorized_keys.j2
+          dest: .ssh/authorized_keys
+
+     - name: changing pssword of the Promomox cluster
+       raw:  'echo "{{ passwd }}\n{{ passwd }}" | passwd {{ user }}'
+
+     - name: changing the sshd_config file
+       template:
+         src: ./sshd_config.j2
+         dest: /etc/ssh/sshd_config
+
+     - name: restarting the ssh service
+       service:
+         name: ssh
+         state: restarted
