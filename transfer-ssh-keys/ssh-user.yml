@@ -1,0 +1,26 @@
+---
+- hosts: all
+  gather_facts: no
+  become: true
+  tasks:
+    - name: Deploy SSH Key
+      authorized_key:
+            user=root
+            key="{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
+            state=present
+
+    - name: Disable Password Authentication
+      lineinfile:
+           dest=/etc/ssh/sshd_config
+           regexp='^PasswordAuthentication'
+           line="PasswordAuthentication no"
+           state=present
+           backup=yes
+      notify:
+        - restart ssh
+
+    handlers:
+       - name: restart ssh
+         service:
+            name=sshd
+            state=restarted
