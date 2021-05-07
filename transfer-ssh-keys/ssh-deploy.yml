@@ -5,9 +5,9 @@
   tasks:
     - name: Deploy SSH Key
       authorized_key:
-            user=root
-            key="{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
-            state=present
+          user: root
+          state: present
+          key:  "{{ lookup('file', '/root/.ssh/authorized_keys') }}"
 
     - name: Disable Password Authentication
       lineinfile:
@@ -19,8 +19,8 @@
       notify:
         - restart ssh
 
-    handlers:
-       - name: restart ssh
-         service:
-            name=sshd
-            state=restarted
+  handlers:
+    - name: restart ssh
+      service:
+        name=sshd
+        state=restarted
